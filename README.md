@@ -93,6 +93,8 @@ curl -w "\nHTTP %{http_code}\n" http://localhost:8000/ranking/999
 
 Retorna o ranking de um movimento. O `identifier` pode ser o **nome** ou o **ID** do movimento.
 
+
+**Resposta 200**
 **Exemplo 1 — Deadlift (sem empates):**
 
 ```json
