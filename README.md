@@ -173,22 +173,4 @@ A princípio eu iria utilizar o RankingService e fazer um algoritmo para consegu
 
 3. **ROW_NUMBER()** — seleciona o melhor recorde de cada usuário. Cada usuário tem vários registros; precisamos apenas do maior. Exemplo para João no Deadlift: 100, 180, 150, 110 → o melhor é 180. Com `PARTITION BY user_id`, a função enumera as linhas dentro de cada usuário. Com `ORDER BY value DESC, recorded_at ASC`, o maior valor fica em 1º; em empate, a data mais antiga vence. Mantemos só onde `rn = 1`, ficando uma linha por usuário com seu recorde.
 
-4. **RANK()** — calcula a posição no ranking e trata empates corretamente (mesmo valor = mesma posição). Exemplo: José 190 → 1º, João 180 → 2º, Paulo e Maria 170 → ambos 3º, Pedro 160 → 5º (o 4º é pulado). Diferente de ROW_NUMBER(), RANK() repete a posição em empates e pula números conforme a regra de ranking.
-
-## Commits sugeridos (Conventional Commits)
-
-Exemplo de sequência de commits para o projeto:
-
-```text
-chore: add composer.json and project structure
-feat(db): add MySQL schema and seed data
-feat(repo): add MovementRepository and PersonalRecordRepository
-feat(service): add RankingService with ranking logic
-feat(http): add Router, JsonResponse and exception handling
-feat(api): add GET /ranking/{identifier} endpoint
-refactor(config): extract database connection to config/database.php
-docs: add README with setup and architecture
-```
-
-Formato: `tipo(escopo): descrição`. Tipos comuns: `feat` (nova funcionalidade), `fix` (correção), `docs` (documentação), `refactor` (refatoração), `chore` (tarefas de manutenção).
-
+4. **RANK()** — calcula a posição no ranking e trata empates corretamente (mesmo valor = mesma posição). Exemplo: José 190 → 1º, João 180 → 2º, Paulo e Maria 170 → ambos 3º, Pedro 160 → 5º (o 4º é pulado). Diferente de ROW_NUMBER(), RANK() repete a posição em empates e pula números conforme a regra de ranking. 
