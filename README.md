@@ -75,8 +75,16 @@ O terceiro argumento (`public/index.php`) é o script de roteamento. Todas as re
 ### 5. Testar
 
 ```bash
+# Por nome
 curl http://localhost:8000/ranking/Deadlift
+curl http://localhost:8000/ranking/Back%20Squat
+
+# Por ID
 curl http://localhost:8000/ranking/1
+curl http://localhost:8000/ranking/2
+
+# 404 — movimento inexistente
+curl -w "\nHTTP %{http_code}\n" http://localhost:8000/ranking/999
 ```
 
 ## API
@@ -85,30 +93,28 @@ curl http://localhost:8000/ranking/1
 
 Retorna o ranking de um movimento. O `identifier` pode ser o **nome** ou o **ID** do movimento.
 
-**Exemplo de resposta (200 OK):**
+**Exemplo 1 — Deadlift (sem empates):**
 
 ```json
 {
   "movement_name": "Deadlift",
   "ranking": [
-    {
-      "user_name": "Jose",
-      "personal_record": "190.00",
-      "record_date": "2021-01-06 00:00:00",
-      "ranking_position": 1
-    },
-    {
-      "user_name": "Joao",
-      "personal_record": "180.00",
-      "record_date": "2021-01-02 00:00:00",
-      "ranking_position": 2
-    },
-    {
-      "user_name": "Paulo",
-      "personal_record": "170.00",
-      "record_date": "2021-01-01 00:00:00",
-      "ranking_position": 3
-    }
+    { "user_name": "Jose", "personal_record": "190.00", "record_date": "2021-01-06 00:00:00", "ranking_position": 1 },
+    { "user_name": "Joao", "personal_record": "180.00", "record_date": "2021-01-02 00:00:00", "ranking_position": 2 },
+    { "user_name": "Paulo", "personal_record": "170.00", "record_date": "2021-01-01 00:00:00", "ranking_position": 3 }
+  ]
+}
+```
+
+**Exemplo 2 — Back Squat (com empates):** João e José têm o mesmo recorde (130). Ambos ficam em 1º; Paulo, em 3º (a posição 2 é pulada).
+
+```json
+{
+  "movement_name": "Back Squat",
+  "ranking": [
+    { "user_name": "Joao", "personal_record": "130.00", "record_date": "2021-01-03 00:00:00", "ranking_position": 1 },
+    { "user_name": "Jose", "personal_record": "130.00", "record_date": "2021-01-03 00:00:00", "ranking_position": 1 },
+    { "user_name": "Paulo", "personal_record": "125.00", "record_date": "2021-01-03 00:00:00", "ranking_position": 3 }
   ]
 }
 ```
@@ -155,7 +161,7 @@ A estrutura aqui não visa overengineering, mas sim demonstrar entendimento de s
 - **INT UNSIGNED** — IDs sempre são positivos
 - **DECIMAL(10,2)** em vez de FLOAT — maior precisão para valores numéricos
 - **recorded_at** em vez de `date` — nome mais semântico e evita palavras reservadas
-- **Índices** — em `movement_id`, `user_id` e `(movement_id, user_id)` para melhor desempenho nas consultas
+- **Índices** — em `movement_id`, `user_id` e `(movement_id, user_id)` para melhor desempenho.  
 
 ### Arquitetura
 
