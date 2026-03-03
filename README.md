@@ -19,6 +19,7 @@ Esta é uma demonstração de habilidade em programação. O desafio é implemen
 - **MySQL 8** — banco de dados
 - **Composer** — autoload e dependências
 - **Conventional Commits** — convenção de mensagens de commit para histórico legível e semântico
+- **PSR-4** — autoload de classes (namespace App\ → src/)
 
 ## Como rodar
 
